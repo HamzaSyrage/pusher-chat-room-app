@@ -3,9 +3,9 @@ import Pusher from "pusher-js";
 import { useAtom } from "jotai";
 import MessagesList from "./components/MessagesList";
 import Input from "./components/Input";
-import UsernameModal from "./components/UserNameModal";
 import { messagesAtom, showUsernameModalAtom } from "./store/atoms";
 import type { MessageType } from "./util/types";
+import UsernameModal from "./components/UsernameModal";
 
 function App() {
 	const [, setMessages] = useAtom(messagesAtom);
