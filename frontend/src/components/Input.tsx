@@ -7,19 +7,21 @@ export default function Input() {
 	const [text, setText] = useState("");
 	const [username] = useAtom(usernameAtom);
 
-	const sendMessage = async () => {
-		if (text.trim()) {
-			await axios.post(
-				(import.meta.env.VITE_API_BASE_URL as string) + "/message",
-				{
-					username,
-					message: text,
-					room: "main",
-				}
-			);
+	async function sendMessage() {
+		if (!text.trim()) return;
+
+		try {
+			await axios.post(`${import.meta.env.VITE_API_BASE_URL}/message`, {
+				username,
+				message: text,
+				room: "main",
+			});
 			setText("");
+		} catch (error) {
+			console.error("Failed to send message:", error);
+			alert("Could not send message. Please try again.");
 		}
-	};
+	}
 
 	return (
 		<div className="p-4 border-t border-gray-700 bg-gray-900 flex gap-2">
