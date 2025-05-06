@@ -17,8 +17,6 @@ app.use(
 );
 app.use(express.json());
 
-let counter = 0;
-
 const pusher = new Pusher({
 	appId: process.env.PUSHER_APP_ID,
 	key: process.env.PUSHER_KEY,
@@ -27,15 +25,17 @@ const pusher = new Pusher({
 	useTLS: true,
 });
 
-app.post("/increment", (req, res) => {
-	counter += 1;
+// let counter = 0;
 
-	pusher.trigger("counter-channel", "counter-update", {
-		count: counter,
-	});
+// app.post("/increment", (req, res) => {
+// 	counter += 1;
 
-	res.status(200).json({ count: counter });
-});
+// 	pusher.trigger("counter-channel", "counter-update", {
+// 		count: counter,
+// 	});
+
+// 	res.status(200).json({ count: counter });
+// });
 
 app.post("/message", (req, res) => {
 	const { username, message, room } = req.body;
