@@ -1,12 +1,8 @@
 import { useAtom } from "jotai";
 import { usernameAtom } from "../store/atoms";
+import type { MessageType } from "../util/types";
 
-type Props = {
-	username: string;
-	message: string;
-};
-
-export default function Message({ username, message }: Props) {
+export default function Message({ username, message }: MessageType) {
 	const [currentUser] = useAtom(usernameAtom);
 	const isOwnMessage = username === currentUser;
 
