@@ -9,11 +9,14 @@ export default function Input() {
 
 	const sendMessage = async () => {
 		if (text.trim()) {
-			await axios.post(import.meta.env.VITE_API_BASE_URL, {
-				username,
-				message: text,
-				room: "main",
-			});
+			await axios.post(
+				(import.meta.env.VITE_API_BASE_URL as string) + "/message",
+				{
+					username,
+					message: text,
+					room: "main",
+				}
+			);
 			setText("");
 		}
 	};
