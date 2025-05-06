@@ -40,6 +40,8 @@ const pusher = new Pusher({
 app.post("/message", (req, res) => {
 	const { username, message, room } = req.body;
 
+	console.log({ username, message, room });
+
 	pusher.trigger(`chat-room-${room}`, "new-message", {
 		username,
 		message,
