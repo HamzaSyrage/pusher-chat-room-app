@@ -29,8 +29,10 @@ export default function Input() {
 				onChange={(e) => setText(e.target.value)}
 				onKeyDown={(e) => e.key === "Enter" && sendMessage()}
 				placeholder="type here"
+				disabled={username == null}
 			/>
 			<button
+				disabled={username == null}
 				onClick={sendMessage}
 				className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
 			>
