@@ -4,6 +4,8 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+
+// allow CORS & parse both urlencoded (Pusher) and JSON
 app.use(
 	cors({
 		origin: [
@@ -15,6 +17,7 @@ app.use(
 		credentials: true,
 	})
 );
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const pusher = new Pusher({
@@ -25,24 +28,40 @@ const pusher = new Pusher({
 	useTLS: true,
 });
 
-// let counter = 0;
+/**
+ * Presence‑channel auth endpoint.
+ * Pusher will POST { socket_id, channel_name } (form data) + your extra params.
+ */
+app.post("/pusher/auth", (req, res) => {
+	const { socket_id, channel_name, username } = req.body;
+	if (!socket_id || !channel_name || !username) {
+		return res
+			.status(400)
+			.send("socket_id, channel_name and username required");
+	}
 
-// app.post("/increment", (req, res) => {
-// 	counter += 1;
+	// Build the presenceData
+	const presenceData = {
+		user_id: username,
+		user_info: { name: username },
+	};
 
-// 	pusher.trigger("counter-channel", "counter-update", {
-// 		count: counter,
-// 	});
+	// Authorize the subscription
+	const auth = pusher.authenticate(socket_id, channel_name, presenceData);
+	res.send(auth);
+});
 
-// 	res.status(200).json({ count: counter });
-// });
-
+/**
+ * Broadcast a chat message.
+ * Clients all subscribe to the same presence channel, so they'll all get this.
+ */
 app.post("/message", (req, res) => {
 	const { username, message, room } = req.body;
+	if (!username || !message || !room) {
+		return res.status(400).send("username, message and room required");
+	}
 
-	console.log({ username, message, room });
-
-	pusher.trigger(`chat-room-${room}`, "new-message", {
+	pusher.trigger(`presence-chat-room-${room}`, "new-message", {
 		username,
 		message,
 	});
