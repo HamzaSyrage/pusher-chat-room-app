@@ -47,7 +47,7 @@ app.post("/pusher/auth", (req, res) => {
 	};
 
 	// Authorize the subscription
-	const auth = pusher.authenticate(socket_id, channel_name, presenceData);
+	const auth = pusher.authorizeChannel(socket_id, channel_name, presenceData);
 	res.send(auth);
 });
 
