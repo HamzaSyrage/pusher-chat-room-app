@@ -59,7 +59,7 @@ function App() {
 	}, [setMessages, setOnline, username]);
 
 	return (
-		<div className="flex flex-col h-screen bg-gray-900 overflow-hidden pb-5">
+		<div className="flex flex-col h-[100svh] bg-gray-900 overflow-hidden pb-5">
 			{showModal && <UsernameModal />}
 			<Header />
 			<MessagesList />
